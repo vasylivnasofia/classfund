@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ClassFund</title>
+<meta name="description" content="ClassFund: a transparent class fund for parents. MVP prototype with mock data.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="phone" aria-label="ClassFund app prototype">
+    <div class="status"><span>08:30</span><span>Parent account</span></div>
+    <div class="classbar"><b>Class 5-B</b><span class="label">School No. 117</span></div>
+    <div class="app" id="app">
+
+      <section class="screen" data-screen="overview">
+        <div class="sec"><span class="label">Section 1 · Class balance</span></div>
+        <div class="box">
+          <span class="balance" id="bal"></span>
+          <span class="muted" id="balUsdc"></span>
+        </div>
+        <div class="sec"><span class="label">Section 2 · October contributions</span><span class="label" id="paidCount"></span></div>
+        <div class="bar"><i id="paidBar"></i></div>
+        <div class="box" id="families"></div>
+        <div class="sec"><span class="label">Section 3 · Open vote</span></div>
+        <div class="box">
+          <div class="row"><b id="ovVote"></b><span class="status-chip warn" id="ovVoteState">Needs votes</span></div>
+          <button class="btn ghost" data-tab-go="votes">Review &amp; vote</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="ledger" hidden>
+        <div class="sec"><span class="label">Ledger · every hryvnia in and out</span></div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Date</th><th>Item</th><th class="num">UAH</th></tr></thead>
+            <tbody id="ledgerRows"></tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin:0;font-size:12px">Each line is recorded on Solana and links to a photo of the receipt.</p>
+      </section>
+
+      <section class="screen" data-screen="votes" hidden>
+        <div class="sec"><span class="label">Spending above 2,000 UAH needs 3 parent approvals</span></div>
+        <h2 id="vTitle"></h2>
+        <div class="box">
+          <div class="row"><span class="muted">Amount</span><b id="vAmt"></b></div>
+          <div class="row"><span class="muted">Requested by</span><b>Class treasurer</b></div>
+          <div class="row"><span class="muted">Shop quote</span><button class="linkbtn" id="quoteBtn">View quote</button></div>
+          <div class="row"><span class="muted">Approvals</span><b id="vCount"></b></div>
+          <div class="voters" id="voters"></div>
+        </div>
+        <div class="btns" id="voteBtns">
+          <button class="btn" id="yesBtn">Approve</button>
+          <button class="btn ghost" id="noBtn">Reject</button>
+        </div>
+        <div class="box" id="voteResult" hidden></div>
+      </section>
+
+      <section class="screen" data-screen="pay" hidden>
+        <div class="sec"><span class="label">Monthly contribution · October</span></div>
+        <div class="box">
+          <div class="row"><span class="muted">Family</span><b>Moroz</b></div>
+          <div class="row"><span class="muted">Amount</span><b class="balance" style="font-size:30px">300 UAH</b></div>
+          <div class="row"><span class="muted">Status</span><span class="status-chip warn" id="myState">Not paid</span></div>
+        </div>
+        <label for="card">Card</label>
+        <input id="card" value="4441 •••• •••• 2017" aria-describedby="cardNote">
+        <p class="muted" id="cardNote" style="margin:0;font-size:12px">You pay by card as usual. ClassFund converts it to USDC and adds it to the class wallet on Solana.</p>
+        <button class="btn" id="payBtn">Pay 300 UAH</button>
+        <div class="box" id="payResult" hidden>
+          <div class="row"><b>Payment recorded</b><span class="status-chip ok">Confirmed</span></div>
+          <div class="row"><span class="muted">Added to class wallet</span><b>7.21 USDC</b></div>
+          <div class="mono" id="payTx"></div>
+        </div>
+      </section>
+
+    </div>
+    <nav class="tabs" aria-label="App sections">
+      <button data-tab="overview" aria-current="true">Overview</button>
+      <button data-tab="ledger" aria-current="false">Ledger</button>
+      <button data-tab="votes" aria-current="false">Votes</button>
+      <button data-tab="pay" aria-current="false">Pay</button>
+    </nav>
+    <div class="overlay" id="overlay" hidden>
+      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+        <div class="row"><b id="sheetTitle" style="font-family:var(--serif);font-size:18px">Receipt</b><button class="linkbtn" id="closeSheet">Close</button></div>
+        <div class="receipt" id="receiptBody"></div>
+        <div class="muted" style="font-size:12px">On-chain record</div>
+        <div class="mono" id="receiptTx"></div>
+      </div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
